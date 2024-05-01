@@ -9,6 +9,7 @@ import (
 
 	"github.com/compose-spec/compose-go/v2/cli"
 	"github.com/compose-spec/compose-go/v2/types"
+	"github.com/nevermarine/gloco/errdefs"
 )
 
 func LoadFile(composeFilePath string) (*types.Project, error) {
@@ -39,10 +40,24 @@ func WriteIni(project *types.Project, iniFilePath string) error {
 	if err != nil {
 		return err
 	}
-	err = tmpl.Execute(f, project.Services["db"])
+	switch {
+	case len(project.Services) > 1:
+		return errdefs.ErrMultipleServices
+	case len(project.Services) < 1:
+		return errdefs.ErrNoService
+	}
+	firstServiceName := getFirstServiceConfigName(project.Services)
+	err = tmpl.Execute(f, project.Services[firstServiceName])
 	f.Close()
 
 	return err
+}
+
+func getFirstServiceConfigName(m map[string]types.ServiceConfig) string {
+    for s := range m {
+        return s
+    }
+    return ""
 }
 
 // func CreateTemplateMap(project *types.Project) (map[string]string, error) {
