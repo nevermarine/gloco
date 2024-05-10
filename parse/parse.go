@@ -25,12 +25,12 @@ func LoadFile(composeFilePath string) (*types.Project, error) {
 	return project, nil
 }
 
-func WriteIni(project *types.Project, iniFilePath string) error {
-	tmplFilePath := "tmpl/systemd.ini"	
-	tmplFile, err := os.ReadFile(tmplFilePath)
-	if err != nil {
-		return err
-	}
+func WriteIni(project *types.Project, iniFilePath string, tmplFile []byte) error {
+	// tmplFilePath := "tmpl/systemd.ini"	
+	// tmplFile, err := os.ReadFile(tmplFilePath)
+	// if err != nil {
+	// 	return err
+	// }
 	tmpl, err := template.New("ini").Parse(string(tmplFile))
 	if err != nil {
 		return err
