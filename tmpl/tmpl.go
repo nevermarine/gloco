@@ -6,3 +6,5 @@ import (
 
 //go:embed systemd.ini
 var TmplFile embed.FS
+
+const TmplFilePath = "systemd.ini"
