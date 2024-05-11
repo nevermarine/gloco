@@ -48,10 +48,10 @@ func CreateIni(project *types.Project, tmplFile []byte) (string, error) {
 }
 
 func getFirstServiceConfigName(m map[string]types.ServiceConfig) string {
-    for s := range m {
-        return s
-    }
-    return ""
+	for s := range m {
+		return s
+	}
+	return ""
 }
 
 // func CreateTemplateMap(project *types.Project) (map[string]string, error) {

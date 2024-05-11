@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/nevermarine/gloco/parse"
-	"github.com/nevermarine/gloco/cli"
-	"github.com/nevermarine/gloco/tmpl"
 	"fmt"
+	"github.com/nevermarine/gloco/cli"
+	"github.com/nevermarine/gloco/parse"
+	"github.com/nevermarine/gloco/tmpl"
 	"io/fs"
 	"os"
 )
@@ -34,7 +34,7 @@ func main() {
 		fmt.Println(err)
 	}
 	defer f.Close()
-	
+
 	_, err = f.WriteString(iniFileStr)
 	if err != nil {
 		fmt.Println(err)

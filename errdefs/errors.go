@@ -4,7 +4,7 @@ import "errors"
 
 var (
 	ErrMultipleServices = errors.New("multiple services in Compose file")
-	ErrNoService = errors.New("no service in Compose file")
+	ErrNoService        = errors.New("no service in Compose file")
 )
 
 func ContainsMultipleServices(err error) bool {
