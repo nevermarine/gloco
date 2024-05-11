@@ -6,6 +6,7 @@ import (
 	"github.com/nevermarine/gloco/tmpl"
 	"fmt"
 	"io/fs"
+	"os"
 )
 
 func main() {
@@ -21,9 +22,22 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	err = parse.WriteIni(project, cli.IniFilePath, byteTmplFile)
+	iniFileStr, err := parse.CreateIni(project, byteTmplFile)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+
+	os.Remove(cli.IniFilePath)
+	f, err := os.Create(cli.IniFilePath)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer f.Close()
+	
+	_, err = f.WriteString(iniFileStr)
+	if err != nil {
+		fmt.Println(err)
+	}
+
 }

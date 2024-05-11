@@ -3,7 +3,7 @@ package parse
 import (
 	"context"
 	// "io/fs"
-	"os"
+	"bytes"
 	"text/template"
 	// "fmt"
 
@@ -25,32 +25,26 @@ func LoadFile(composeFilePath string) (*types.Project, error) {
 	return project, nil
 }
 
-func WriteIni(project *types.Project, iniFilePath string, tmplFile []byte) error {
-	// tmplFilePath := "tmpl/systemd.ini"	
-	// tmplFile, err := os.ReadFile(tmplFilePath)
-	// if err != nil {
-	// 	return err
-	// }
+func CreateIni(project *types.Project, tmplFile []byte) (string, error) {
 	tmpl, err := template.New("ini").Parse(string(tmplFile))
 	if err != nil {
-		return err
-	}
-	os.Remove(iniFilePath)
-	f, err := os.Create(iniFilePath)
-	if err != nil {
-		return err
+		return "", err
 	}
 	switch {
 	case len(project.Services) > 1:
-		return errdefs.ErrMultipleServices
+		return "", errdefs.ErrMultipleServices
 	case len(project.Services) < 1:
-		return errdefs.ErrNoService
+		return "", errdefs.ErrNoService
 	}
 	firstServiceName := getFirstServiceConfigName(project.Services)
-	err = tmpl.Execute(f, project.Services[firstServiceName])
-	f.Close()
 
-	return err
+	// write ini file to temporary buffer
+	var buf bytes.Buffer
+	if err := tmpl.Execute(&buf, project.Services[firstServiceName]); err != nil {
+		return "", err
+	}
+
+	return buf.String(), nil
 }
 
 func getFirstServiceConfigName(m map[string]types.ServiceConfig) string {
