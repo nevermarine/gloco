@@ -17,7 +17,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	byteTmplFile, err := fs.ReadFile(tmpl.TmplFile, "systemd.ini")
+	byteTmplFile, err := fs.ReadFile(tmpl.TmplFile, tmpl.TmplFilePath)
 	if err != nil {
 		fmt.Println(err)
 		return
