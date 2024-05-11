@@ -1,0 +1,5 @@
+*.service
+docker-compose.yml
+*.yml
+gloco
+gloco-*
